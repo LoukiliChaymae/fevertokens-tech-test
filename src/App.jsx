@@ -11,6 +11,7 @@ import {
 import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
 import { usePagination } from "@table-library/react-table-library/pagination";
+import { AiOutlineStar , AiTwotoneStar } from 'react-icons/ai';
 // Example implementation of getData function in server.js or similar file
 
 // export const getData = async (params) => {
@@ -61,14 +62,20 @@ function App() {
     getTheme(),
     {
       Table: `
-        --data-table-library_grid-template-columns:  250px 25% 25% 25% 50% 150px;
+        --data-table-library_grid-template-columns:  50px 50px 250px 20% 20% 20% 20% 20% 150px;
       `,
       BaseCell: `
       &:nth-of-type(1) {
         left: 0px;
       }
+      &:nth-of-type(2) {
+        left: 50px;
+      }
+      &:nth-of-type(3) {
+        left: 100px;
+      }
 
-      &:nth-of-type(6) {
+      &:nth-of-type(9) {
         right: 0px;
       }
     `,
@@ -76,54 +83,70 @@ function App() {
   ]);
 
   const [nodes, setNodes] = React.useState([]);
-
+  const [ids, setIds] = React.useState([]);
+  const proxyurl = "https://cors-anywhere.herokuapp.com/";
   React.useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=2&sparkline=false&locale=en");
+      const response = await fetch(proxyurl+"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=2&sparkline=false&locale=en");
       const data = await response.json();
+      console.log(data)
+      // const ids = data.map((item) => item.image.split('images/')[1].split('/')[0] ).join(',');
+      // console.log(ids)
+     
       setNodes(data);
+      // setIds(ids);
+      // const idsData = await fetch(proxyurl+`https://www.coingecko.com/coins/price_percentage_change?ids=${ids}&vs_currency=usd`)
+      // console.log(idsData)
     }
     fetchData();
   }, []);
     const data = { nodes };
   return (
-    <div className="w-screen h-screen">
-      <Table data={data} theme={theme} layout={{ custom: true }} className="h-full">
+    <div className="w-screen flex align-center justify-center">
+      <Table data={data} theme={theme} layout={{ custom: true }} className="w-screen h-screen">
       {(tableList) => (
         <>
           <Header>
             <HeaderRow>
+              <HeaderCell pinLeft></HeaderCell>
               <HeaderCell pinLeft>#</HeaderCell>
-              <HeaderCell pinLeft>Task</HeaderCell>
-              <HeaderCell>Deadline</HeaderCell>
-              <HeaderCell>Type</HeaderCell>
-              <HeaderCell>Complete</HeaderCell>
-              <HeaderCell pinRight>Tasks</HeaderCell>
+              <HeaderCell pinLeft>Coin</HeaderCell>
+              <HeaderCell>Current Price</HeaderCell>
+              <HeaderCell>24h Price</HeaderCell>
+              <HeaderCell>24h high</HeaderCell>
+              <HeaderCell>24h low</HeaderCell>
+              <HeaderCell>total volume</HeaderCell>
+              <HeaderCell pinRight>Last 7 days</HeaderCell>
             </HeaderRow>
           </Header>
 
           <Body>
             {tableList.map((item, index) => (
               <Row key={item.id} item={item}>
-                <Cell pinLeft>{index}</Cell>
-                <Cell >
-                <div className="flex items-center" >
-                <div><img width={'20px'} height={'20px'} src={item.image}/></div>
-                <div>{item.name}</div>
-                <div>{item.symbol}</div>
-                </div>
+                <Cell pinLeft><AiOutlineStar /></Cell>
+                <Cell pinLeft>
+                    {index+1}
                 </Cell>
-                <Cell>{item.name}</Cell>
-                <Cell>
-                  {item.name}
+                <Cell pinLeft>
+                  <div className="flex gap-2 items-center" >
+                    <div><img width={'20px'} height={'20px'} src={item.image}/></div>
+                    <div className="">{item.name}</div>
+                    <div className="font-light">{item.symbol}</div>
+                  </div>
                 </Cell>
                 <Cell>{item.current_price}</Cell> 
+                <Cell>{item.price_change_24h}</Cell>
+                <Cell>{item.high_24h}</Cell>
+                <Cell>{item.low_24h}</Cell>
+                <Cell>{item.total_volume}</Cell>
+                
                  
-                <Cell pinRight><img src="https://img.icons8.com/ios/50/000000/plus.png" /></Cell>
+                <Cell pinRight><img src={`https://www.coingecko.com/coins/${item.image.split('images')[1].split('large')[0]}/sparkline.svg`} /></Cell>
               </Row>
             ))}
           </Body>
         </>
+
       )}
     </Table>
     {/* {data.pageInfo && (
