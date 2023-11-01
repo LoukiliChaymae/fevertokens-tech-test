@@ -36,12 +36,11 @@ function DetailsPage() {
     }, [])
     
   return (   
-    <> <div className=" w-screen gap-4 flex justify-center items-center bg-gradient-to-r from-[#0C0A1D] to-[#17162B]"><HeaderSection className="mt-4" /></div>
+    <div className="h-screen bg-gradient-to-r from-[#0C0A1D] to-[#17162B]"> <div className=" flex-col "><HeaderSection className="mt-4 flex justify-center items-center" />
 
-    <div > 
-    <div className="grid grid-cols-2">
-    <div col-span-1>
-      <div>
+    <div className="flex flex-1 ">
+    <div className="w-2/5 bg-gray-300 flex justify-center">
+      <div className='lg:w-[98%] rounded overflow-hidden shadow-lg bg-blue-500'>
         <div class="rounded-md justify-center text-sm bg-zinc-950 text-white flex  w-[4rem] px-0">Rank #{a}</div>
         <div className="flex gap-2 items-center" >
           <div><img width={'25px'} height={'25px'} src={details?.image?.small}/></div>
@@ -52,9 +51,11 @@ function DetailsPage() {
         <div></div>
       </div>
     </div>
-    <div col-span-1> chart</div>
+    <div class="w-3/5 bg-gray-500 flex justify-center"> 
+     <div className='lg:w-[98%] rounded overflow-hidden shadow-lg bg-red-500'>chart</div>
     </div>
-    </div></>  
+    
+    </div></div></div>  
   )
 }
 
