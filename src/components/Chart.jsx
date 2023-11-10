@@ -25,7 +25,6 @@ ChartJS.register(
     Filler,
     Legend
   );
-
 export const options = {
 responsive: true,
 plugins: {
@@ -34,58 +33,51 @@ legend: {
 },
 title: {
   display: true,
-  text: 'Chart.js Line Chart',
+  text: 'wewe',
 },
 },
 };
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
 
 // Now create the chart
 function Chart(){
     const { Id } = useParams();
     const [chartInfo, setChartInfo] = useState([]);
+
     useEffect(() => {
-        const fetchForChart = async()=>{
-          try {
-          const fetchChart= await fetch(`https://api.coingecko.com/api/v3/coins/${Id}/market_chart?vs_currency=usd&days=30&interval=daily`)
-          const chart = await fetchChart.json();
-          const wewe = chart.prices.map( (price) => (
-            {
-                x : price[0],
-                y : price[1].toFixed(2)
-        
-            }
-            
-        )
-        
-        )
-          setChartInfo( wewe
-        
-        );
-        console.log("chartInfo",wewe);
-        }  catch (error) {
-          console.error("Une erreur s'est produite lors de la récupération des données :", error);
-      }}
-        fetchForChart()
-      }, [])
+      const fetchForChart = async()=>{
+        try {
+        const fetchChart= await fetch(`https://api.coingecko.com/api/v3/coins/${Id}/market_chart?vs_currency=usd&days=70&interval=daily`)
+        const chart = await fetchChart.json();
+        const prices = chart.prices.map( (price) => (
+          {
+              x : price[0],
+              y : price[1].toFixed(2)
+          }
+        ))
+        setChartInfo(prices);
+      }  catch (error) {
+        console.error("Une erreur s'est produite lors de la récupération des données :", error);
+    }}
+      fetchForChart()
+  }, [])
 
       const data = {
         labels:chartInfo.map(value => moment(value.x). format('MMM DD')),
         datasets: [
-        {
-          fill: true,
-          label: 'Dataset 2',
-          data: chartInfo.map((info)=> info.y),
-          borderColor: 'rgb(53, 162, 235)',
-          backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
+          {
+            fill: true,
+            label: 'Dataset 2',
+            data: chartInfo.map((info)=> info.y),
+            borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          },
         ],
-        };
-   
+      };
+
     return(
-        <Line options={options} data={data} />
+        
+          <Line options={options} data={data} className="w-full" />
+        
       );
 }
 export default Chart;

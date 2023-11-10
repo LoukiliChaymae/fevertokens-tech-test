@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react";
 import "../App.css";
-import {LoopCircleLoading} from 'react-loadingg';
+import { LoopCircleLoading } from 'react-loadingg';
 import {
   Table,
   Header,
@@ -10,7 +10,6 @@ import {
   HeaderCell,
   Cell,
 } from "@table-library/react-table-library/table";
-import {Navigate} from "react-router-dom";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
 import { AiOutlineStar , AiTwotoneStar } from 'react-icons/ai';
@@ -46,7 +45,6 @@ function MainPage() {
 
   const [nodes, setNodes] = React.useState([]);
   const [loading, setLoading] = useState(false)
-  const [ids, setIds] = React.useState([]);
   const proxyurl = "https://cors-anywhere.herokuapp.com/";
   const url= "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=2&sparkline=false&locale=en"
   React.useEffect(() => {
@@ -70,7 +68,7 @@ function MainPage() {
     }, [loading])
     
   return (
-    <div className="w-screen flex justify-center items-center flex-col bg-gradient-to-r from-[#0C0A1D] to-[#17162B] gap-5"> 
+    <div className="w-screen h-screen flex  items-center flex-col bg-gradient-to-r from-[#0C0A1D] to-[#17162B] gap-5"> 
       <HeaderSection/>
     {
       loading ? 
@@ -112,21 +110,14 @@ function MainPage() {
                 <Cell>{item.high_24h}</Cell>
                 <Cell>{item.low_24h}</Cell>
                 <Cell>{item.total_volume}</Cell>
-                
-                 
                 <Cell pinRight><img src={`https://www.coingecko.com/coins/${item.image.split('images')[1].split('large')[0]}/sparkline.svg`} /></Cell>
               </Row>
             ))}
           </Body>
         </>
-
       )}
       </Table>
-   
     }
-    
-
-   
   </div>
   );
             }
